@@ -53,8 +53,8 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent), m_shaderProgram(0)
     updateProjection();
     updateView();
 
-    m_spendTime.setHMS(0, 0, 0);
-    m_estimatedTime.setHMS(0, 0, 0);
+    m_spendTime = 0;
+    m_estimatedTime = 0;
 
     m_vsync = false;
     m_targetFps = 60;
@@ -333,22 +333,22 @@ void GLWidget::setFps(int fps)
     m_timerPaint.start(m_vsync ? 0 : 1000 / fps, Qt::PreciseTimer, this);
 }
 
-QTime GLWidget::estimatedTime() const
+int GLWidget::estimatedTime() const
 {
     return m_estimatedTime;
 }
 
-void GLWidget::setEstimatedTime(const QTime &estimatedTime)
+void GLWidget::setEstimatedTime(const int estimatedTime)
 {
     m_estimatedTime = estimatedTime;
 }
 
-QTime GLWidget::spendTime() const
+int GLWidget::spendTime() const
 {
     return m_spendTime;
 }
 
-void GLWidget::setSpendTime(const QTime &spendTime)
+void GLWidget::setSpendTime(const int spendTime)
 {
     m_spendTime = spendTime;
 }
@@ -497,7 +497,7 @@ void GLWidget::paintEvent(QPaintEvent *pe) {
     str = QString("FPS: %1").arg(m_fps);
     painter.drawText(QPoint(this->width() - fm.width(str) - 10, y + 45), str);
 
-    str = m_spendTime.toString("hh:mm:ss") + " / " + m_estimatedTime.toString("hh:mm:ss");
+    str = Util::convertTime(m_spendTime) + " / " + Util::convertTime(m_estimatedTime);
     painter.drawText(QPoint(this->width() - fm.width(str) - 10, y), str);
 
     str = m_bufferState;

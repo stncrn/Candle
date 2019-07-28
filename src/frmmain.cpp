@@ -896,9 +896,9 @@ void frmMain::onSerialPortReadyRead()
 
                 // Update "elapsed time" timer
                 if (m_processingFile) {
-                    QTime time(0, 0, 0);
                     int elapsed = m_startTime.elapsed();
-                    ui->glwVisualizer->setSpendTime(time.addMSecs(elapsed));
+                    elapsed = elapsed/1000;
+                    ui->glwVisualizer->setSpendTime(elapsed);
                 }
 
                 // Test for job complete
@@ -928,7 +928,7 @@ void frmMain::onSerialPortReadyRead()
                     m_timerConnection.stop();
 
                     QMessageBox::information(this, qApp->applicationDisplayName(), tr("Job done.\nTime elapsed: %1")
-                                             .arg(ui->glwVisualizer->spendTime().toString("hh:mm:ss")));
+                                             .arg(Util::convertTime((int)ui->glwVisualizer->spendTime())));
 
                     m_timerStateQuery.setInterval(m_settings->queryStateTime());
                     m_timerConnection.start();
@@ -1789,7 +1789,7 @@ void frmMain::loadFile(QString fileName)
     loadFile(data);
 }
 
-QTime frmMain::updateProgramEstimatedTime(QList<LineSegment*> lines)
+void frmMain::updateProgramEstimatedTime(QList<LineSegment*> lines)
 {
     double time = 0;
 
@@ -1813,16 +1813,10 @@ QTime frmMain::updateProgramEstimatedTime(QList<LineSegment*> lines)
     }
 
     time *= 60;
+    int t = (int)time;
 
-    QTime t;
-
-    t.setHMS(0, 0, 0);
-    t = t.addSecs(time);
-
-    ui->glwVisualizer->setSpendTime(QTime(0, 0, 0));
+    ui->glwVisualizer->setSpendTime(0);
     ui->glwVisualizer->setEstimatedTime(t);
-
-    return t;
 }
 
 void frmMain::clearTable()
@@ -1948,7 +1942,7 @@ void frmMain::onActSendFromLineTriggered()
         m_currentModel->data()[i].response = QString();
     }
     ui->tblProgram->setUpdatesEnabled(true);
-    ui->glwVisualizer->setSpendTime(QTime(0, 0, 0));
+    ui->glwVisualizer->setSpendTime(0);
 
     m_startTime.start();
 
@@ -2514,7 +2508,7 @@ void frmMain::on_cmdFileReset_clicked()
         ui->tblProgram->clearSelection();
         ui->tblProgram->selectRow(0);
 
-        ui->glwVisualizer->setSpendTime(QTime(0, 0, 0));
+        ui->glwVisualizer->setSpendTime(0);
     } else {
         ui->txtHeightMapGridX->setEnabled(true);
         ui->txtHeightMapGridY->setEnabled(true);

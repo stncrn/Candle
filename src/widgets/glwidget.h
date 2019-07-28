@@ -30,11 +30,11 @@ public:
     bool antialiasing() const;
     void setAntialiasing(bool antialiasing);
 
-    QTime spendTime() const;
-    void setSpendTime(const QTime &spendTime);
+    int spendTime() const;
+    void setSpendTime(const int spendTime);
 
-    QTime estimatedTime() const;
-    void setEstimatedTime(const QTime &estimatedTime);
+    int estimatedTime() const;
+    void setEstimatedTime(const int estimatedTime);
 
     double lineWidth() const;
     void setLineWidth(double lineWidth);
@@ -108,8 +108,8 @@ private:
     int m_fps = 0;
     int m_targetFps;
     int m_animationFrame;
-    QTime m_spendTime;
-    QTime m_estimatedTime;
+    int m_spendTime;
+    int m_estimatedTime;
     QBasicTimer m_timerPaint;
     double m_xRotTarget, m_yRotTarget;
     double m_xRotStored, m_yRotStored;

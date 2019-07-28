@@ -56,6 +56,23 @@ public:
     {
         button->setIcon(invertIconColors(button->icon()));
     }
+
+    static QString convertTime(int t){
+
+        int seconds = t%60;
+        t = t/60;
+
+        int minutes = t%60;
+        t = t/60;
+
+        int hours = t%24;
+        t = t/24;
+
+        QString out = QString::number(t) + ":" + QString::number(hours).rightJustified(2,'0') + ":" + QString::number(minutes).rightJustified(2,'0') + ":" + QString::number(seconds).rightJustified(2,'0');
+
+        return out;
+    }
+
 };
 
 #endif // UTIL
